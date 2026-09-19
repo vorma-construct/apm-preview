@@ -6866,36 +6866,31 @@ body.portada .hero a[href*="whatsapp"] svg{color:#fff!important;fill:#fff!import
 var C=["https://d8j0ntlcm91z4.cloudfront.net/user_3JVkNd1GnfKqGxO6OaFHjhkWtp2/hf_20260918_210207_07e34844-c3a8-498f-847a-ce828ac2a9e3.mp4","https://d8j0ntlcm91z4.cloudfront.net/user_3JVkNd1GnfKqGxO6OaFHjhkWtp2/hf_20260918_210207_77b5bc2a-de19-4668-a0a6-be2fb422fdf5.mp4","https://d8j0ntlcm91z4.cloudfront.net/user_3JVkNd1GnfKqGxO6OaFHjhkWtp2/hf_20260918_210207_784f9573-025f-4955-b1c1-c5e07ede1987.mp4","https://d8j0ntlcm91z4.cloudfront.net/user_3JVkNd1GnfKqGxO6OaFHjhkWtp2/hf_20260918_210207_c51b8253-f97d-4e2c-acd0-b2666904fec1.mp4"];
 var a=document.getElementById('heroVidA'),b=document.getElementById('heroVidB');
 if(!a||!b)return;
+/* precargamos los cuatro para que ninguno se quede sin verse */
+C.forEach(function(u){var v=document.createElement('video');v.preload='auto';v.muted=true;v.src=u;});
 var act=0,i=-1,vs=[a,b],t=null;
 function pon(n){n=(n%C.length+C.length)%C.length;if(n===i)return;i=n;
- var s=1-act,v=vs[s],ant=vs[act];v.src=C[n];v.currentTime=0;
+ var s=1-act,v=vs[s],ant=vs[act];
+ if(v.src!==C[n])v.src=C[n];
+ try{v.currentTime=0}catch(e){}
  var p=v.play();if(p&&p.catch)p.catch(function(){});
  v.classList.add('on');ant.classList.remove('on');
  setTimeout(function(){try{ant.pause()}catch(e){}},1300);act=s}
 pon(0);
-function arranca(){if(!t)t=setInterval(function(){pon(i+1)},9000)}
+function arranca(){if(!t)t=setInterval(function(){pon(i+1)},6000)}
 function para(){if(t){clearInterval(t);t=null}}
 arranca();
 document.addEventListener('visibilitychange',function(){document.hidden?para():arranca()});
-
-/* El video acompana TODA la portada: se reparte el recorrido entre los cuatro tramos
-   de arriba abajo, y sigue puesto hasta el final de la pagina. */
 var portada=document.getElementById('p-index');
-function alBajar(){
+window.addEventListener('scroll',function(){
  if(!portada)return;
  var alto=portada.scrollHeight-window.innerHeight;
  if(alto<=0)return;
  var y=Math.min(alto,Math.max(0,window.scrollY-portada.offsetTop));
  var rec=y/alto;
- pon(Math.floor(rec*C.length*0.999));
  var bg=document.querySelector('.hero__bg--video');
- if(bg){/* al llegar al final, se apaga suavemente */
-  bg.style.opacity = rec>0.96 ? String(Math.max(0,(1-rec)/0.04)) : '1';
- }
-}
-window.addEventListener('scroll',alBajar,{passive:true});
-window.addEventListener('resize',alBajar);
-alBajar();
+ if(bg)bg.style.opacity = rec>0.96 ? String(Math.max(0,(1-rec)/0.04)) : '1';
+},{passive:true});
 document.addEventListener('touchstart',function(){var v=vs[act];if(v.paused){var p=v.play();if(p&&p.catch)p.catch(function(){})}},{once:true,passive:true});
 })();</script><script>(function(){function m(){var hay=document.querySelector('.vpage:target');document.body.classList.toggle('portada',!hay)}m();window.addEventListener('hashchange',m);})();</script>
 <style id="cristal-final">
@@ -6991,6 +6986,16 @@ document.addEventListener('touchstart',function(){var v=vs[act];if(v.paused){var
 .hero p,.hero li,.hero span,.hero label,.hero small{color:#ffffff!important;opacity:1!important}
 .hero .t,.hero .t *{color:#ffffff!important;opacity:1!important}
 .hero .qcard input::placeholder{color:#ffffff!important;opacity:.92!important}
+</style>
+
+<style id="tipografia-seria">
+.hero h1,.hero h2,#p-index .hero h1{
+ font-family:'Barlow Condensed','Oswald','Arial Narrow',system-ui,sans-serif!important;
+ font-weight:700!important;letter-spacing:-.4px!important;line-height:1.02!important;
+ text-transform:none!important;
+}
+.hero .kicker{font-family:inherit!important;letter-spacing:2px!important;font-weight:600!important}
+.hero .qcard h3{font-family:'Barlow Condensed','Oswald',system-ui,sans-serif!important;font-weight:700!important}
 </style>
 </body>
 </html>
