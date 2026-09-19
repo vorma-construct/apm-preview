@@ -6962,6 +6962,23 @@ document.addEventListener('touchstart',function(){var v=vs[act];if(v.paused){var
  border-radius:999px!important;padding:16px 20px!important;
 }
 
+
+/* toda la letra de la portada en blanco mate, sin transparencias */
+.hero, .hero *:not(.btn):not(button):not(a[href*="wa.me"]):not(.qcard__tag){opacity:1!important}
+.hero h1,.hero h2,.hero h3,.hero p,.hero li,.hero span,.hero label,.hero small,.hero div{
+ color:#ffffff!important;
+}
+.hero .hero__sub,.hero .kicker,.hero .t,.hero .t *{color:#ffffff!important;opacity:1!important}
+.hero .qcard h3,.hero .qcard p,.hero .qcard label,.hero .qcard small,.hero .qcard span{color:#ffffff!important;opacity:1!important}
+.hero .qcard input,.hero .qcard select,.hero .qcard textarea{color:#ffffff!important;opacity:1!important}
+.hero .qcard input::placeholder,.hero .qcard textarea::placeholder{color:#ffffff!important;opacity:.92!important}
+.hero .seg *,.hero .qcard .seg *{color:#ffffff!important;opacity:1!important}
+/* los iconos de las ventajas, en blanco tambien */
+.hero .t svg{color:#ffffff!important;stroke:#ffffff!important;opacity:1!important}
+/* el verde claro del titular se mantiene, es la marca */
+.hero h1 .acc,.hero h1 em,.hero h1 span.brand{color:#8fd6a6!important}
+
+#p-index .hero p,#p-index .hero .hero__sub,#p-index .hero__sub,.hero .hero__sub,.hero p,.hero .lead,.hero [class*='sub']{color:#ffffff!important;opacity:1!important}.hero .t,.hero .t span,.hero .t div{color:#ffffff!important;opacity:1!important}
 .hero .qcard__tag{background:#C79A2E!important;color:#1a1204!important;text-shadow:none!important}
 /* WhatsApp de la cabecera en verde */
 .hero a[href*="wa.me"],.hero a[href*="whatsapp"]{
