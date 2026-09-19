@@ -903,7 +903,72 @@ img[data-ph="bano2"]{background-image:url(data:image/jpeg;base64,/9j/4AAQSkZJRgA
 #p-index .hero ~ .section,#p-index .hero ~ section{position:relative;z-index:1;background:var(--paper,#fff)}
 @media(max-width:760px){#p-index .hero{padding-bottom:12vh}}
 @media(prefers-reduced-motion:reduce){#p-index .hero__bg--video{position:absolute}}
-#p-index .hero{background:transparent!important}#p-index .hero__bg--video{position:fixed;inset:0;z-index:-1}html,body{background:#06110a}html:not(:has(.vpage:target)) body{background:transparent!important}html:not(:has(.vpage:target)){background:#06110a}body.portada{background:transparent!important}body.portada #p-index > .section,body.portada #p-index > section:not(.hero){background:var(--paper)!important;position:relative;z-index:1}body.portada #p-index > .section--paper2{background:var(--paper2,#f4f1ea)!important}body.portada #p-index > .section--ink{background:var(--ink)!important}body.portada footer,body.portada .footer{background:var(--ink)!important;position:relative;z-index:1}body.portada .topbar{position:relative;z-index:2}body.portada #p-index{background:var(--paper)!important}body.portada #p-index > .hero{background:transparent!important}body.portada #p-index{position:relative;z-index:1}body.portada #p-index > .hero{z-index:auto}body.portada #p-index{background:transparent!important}body.portada #p-index > .section,body.portada #p-index > section:not(.hero){background:rgba(255,255,255,.94)!important;backdrop-filter:blur(2px)}body.portada #p-index > .section--paper2{background:rgba(244,241,234,.94)!important}body.portada #p-index > .section--ink{background:rgba(10,26,18,.90)!important}.hero__bg--video{transition:opacity .6s ease}body.portada{background:#0a1a12!important}body.portada #p-index > .section:last-of-type{padding-bottom:4rem}body.portada footer,body.portada .site-footer,body.portada [class*=footer]{background:#0a1a12!important;position:relative;z-index:1}</style>
+#p-index .hero{background:transparent!important}#p-index .hero__bg--video{position:fixed;inset:0;z-index:-1}html,body{background:#06110a}html:not(:has(.vpage:target)) body{background:transparent!important}html:not(:has(.vpage:target)){background:#06110a}body.portada{background:transparent!important}body.portada #p-index > .section,body.portada #p-index > section:not(.hero){background:var(--paper)!important;position:relative;z-index:1}body.portada #p-index > .section--paper2{background:var(--paper2,#f4f1ea)!important}body.portada #p-index > .section--ink{background:var(--ink)!important}body.portada footer,body.portada .footer{background:var(--ink)!important;position:relative;z-index:1}body.portada .topbar{position:relative;z-index:2}body.portada #p-index{background:var(--paper)!important}body.portada #p-index > .hero{background:transparent!important}body.portada #p-index{position:relative;z-index:1}body.portada #p-index > .hero{z-index:auto}body.portada #p-index{background:transparent!important}body.portada #p-index > .section,body.portada #p-index > section:not(.hero){background:rgba(255,255,255,.94)!important;backdrop-filter:blur(2px)}body.portada #p-index > .section--paper2{background:rgba(244,241,234,.94)!important}body.portada #p-index > .section--ink{background:rgba(10,26,18,.90)!important}.hero__bg--video{transition:opacity .6s ease}body.portada{background:#0a1a12!important}body.portada #p-index > .section:last-of-type{padding-bottom:4rem}body.portada footer,body.portada .site-footer,body.portada [class*=footer]{background:#0a1a12!important;position:relative;z-index:1}
+/* PORTADA: formulario translucido y WhatsApp en verde */
+body.portada #p-index .hero .card,
+body.portada #p-index .hero form,
+body.portada #p-index .hero [class*="calc"],
+body.portada #p-index .hero [class*="form"]{
+ background:rgba(255,255,255,.80)!important;
+ backdrop-filter:blur(14px) saturate(1.1);
+ -webkit-backdrop-filter:blur(14px) saturate(1.1);
+ border:1px solid rgba(255,255,255,.55)!important;
+ box-shadow:0 18px 50px rgba(0,0,0,.35)!important;
+}
+body.portada #p-index .hero input,
+body.portada #p-index .hero select,
+body.portada #p-index .hero textarea{
+ background:rgba(255,255,255,.72)!important;
+ border-color:rgba(2,40,22,.18)!important;
+}
+body.portada #p-index .hero label,
+body.portada #p-index .hero .card p{color:#16301f!important}
+
+/* el boton de WhatsApp de la cabecera, en verde de WhatsApp */
+body.portada #p-index .hero a[href*="wa.me"],
+body.portada #p-index .hero a[href*="whatsapp"]{
+ background:#25D366!important;border-color:#25D366!important;color:#fff!important;
+}
+body.portada #p-index .hero a[href*="wa.me"] svg,
+body.portada #p-index .hero a[href*="whatsapp"] svg{color:#fff!important;fill:#fff!important}
+
+/* el formulario mas translucido y sin cajas blancas dentro */
+body.portada #p-index .hero .card,
+body.portada #p-index .hero form,
+body.portada #p-index .hero [class*="calc"],
+body.portada #p-index .hero [class*="form"]{
+ background:rgba(255,255,255,.62)!important;
+ backdrop-filter:blur(16px) saturate(1.15);
+ -webkit-backdrop-filter:blur(16px) saturate(1.15);
+}
+body.portada #p-index .hero .card > *,
+body.portada #p-index .hero form > *{background:transparent!important;box-shadow:none!important}
+body.portada #p-index .hero input,
+body.portada #p-index .hero select,
+body.portada #p-index .hero textarea{
+ background:rgba(255,255,255,.55)!important;border:1px solid rgba(2,40,22,.22)!important;color:#12281b!important;
+}
+body.portada #p-index .hero input::placeholder{color:#4a5a50!important}
+body.portada #p-index .hero button:not([class*="chip"]):not([class*="tab"]){box-shadow:0 6px 18px rgba(0,0,0,.28)!important}
+
+/* la tarjeta del presupuesto, translucida sobre el video */
+body.portada .qcard{
+ background:rgba(255,255,255,.58)!important;
+ backdrop-filter:blur(18px) saturate(1.15);
+ -webkit-backdrop-filter:blur(18px) saturate(1.15);
+ border:1px solid rgba(255,255,255,.5)!important;
+ box-shadow:0 20px 60px rgba(0,0,0,.38)!important;
+}
+body.portada .qcard h3{color:#10251a!important}
+body.portada .qcard p,body.portada .qcard label{color:#2b4034!important}
+body.portada .qcard input,body.portada .qcard select,body.portada .qcard textarea{
+ background:rgba(255,255,255,.55)!important;border:1px solid rgba(2,40,22,.22)!important;color:#12281b!important;
+}
+body.portada .qcard input::placeholder{color:#55665c!important}
+body.portada .qcard .chip,body.portada .qcard [class*="chip"]{background:rgba(255,255,255,.55)!important;border-color:rgba(2,40,22,.18)!important}
+body.portada .qcard .chip.is-on,body.portada .qcard [class*="chip"][class*="on"],
+body.portada .qcard [aria-pressed="true"]{background:#0b5c2e!important;color:#fff!important;border-color:#0b5c2e!important}
+body.portada .qcard form,body.portada .qcard form > *{background:transparent!important}body.portada .qcard form{box-shadow:none!important;border:0!important}</style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "GeneralContractor", "@id": "https://reformasapmbilbao.es/#business", "name": "Reformas APM (Reformas APMendi)", "image": "https://reformasapmbilbao.es/wp-content/uploads/2021/12/apm-reformas.png", "logo": "https://reformasapmbilbao.es/wp-content/uploads/2021/12/apm-reformas.png", "url": "https://reformasapmbilbao.es/", "telephone": "+34671938614", "email": "info@reformasapmbilbao.es", "priceRange": "€€", "areaServed": ["Bilbao", "Santutxu", "Bizkaia", "Getxo", "Barakaldo", "Basauri", "Sestao"], "address": {"@type": "PostalAddress", "streetAddress": "Karmelo Kalea 15", "addressLocality": "Bilbao", "postalCode": "48003", "addressRegion": "Bizkaia", "addressCountry": "ES"}, "openingHours": ["Mo-Fr 10:00-14:00", "Mo-Fr 16:00-20:00", "Sa 10:00-14:00"]}</script>
 <script>document.documentElement.classList.add('js')</script>
 </head>
