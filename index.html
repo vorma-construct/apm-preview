@@ -968,7 +968,33 @@ body.portada .qcard input::placeholder{color:#55665c!important}
 body.portada .qcard .chip,body.portada .qcard [class*="chip"]{background:rgba(255,255,255,.55)!important;border-color:rgba(2,40,22,.18)!important}
 body.portada .qcard .chip.is-on,body.portada .qcard [class*="chip"][class*="on"],
 body.portada .qcard [aria-pressed="true"]{background:#0b5c2e!important;color:#fff!important;border-color:#0b5c2e!important}
-body.portada .qcard form,body.portada .qcard form > *{background:transparent!important}body.portada .qcard form{box-shadow:none!important;border:0!important}</style>
+body.portada .qcard form,body.portada .qcard form > *{background:transparent!important}body.portada .qcard form{box-shadow:none!important;border:0!important}
+/* formulario totalmente translucido: solo cristal, sin fondo blanco */
+body.portada .qcard{
+ background:rgba(255,255,255,.10)!important;
+ backdrop-filter:blur(10px) saturate(1.1);
+ -webkit-backdrop-filter:blur(10px) saturate(1.1);
+ border:1px solid rgba(255,255,255,.35)!important;
+ box-shadow:0 18px 50px rgba(0,0,0,.30)!important;
+}
+body.portada .qcard h3{color:#fff!important;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+body.portada .qcard p,body.portada .qcard label{color:#eef3ef!important;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+body.portada .qcard input,body.portada .qcard select,body.portada .qcard textarea{
+ background:rgba(255,255,255,.14)!important;
+ border:1px solid rgba(255,255,255,.45)!important;
+ color:#fff!important;
+}
+body.portada .qcard input::placeholder{color:rgba(255,255,255,.75)!important}
+body.portada .qcard select option{color:#12281b}
+body.portada .qcard .chip,body.portada .qcard [class*="chip"]{
+ background:rgba(255,255,255,.14)!important;border:1px solid rgba(255,255,255,.45)!important;color:#fff!important;
+}
+body.portada .qcard .chip.is-on,body.portada .qcard [aria-pressed="true"]{
+ background:#0b5c2e!important;border-color:#0b5c2e!important;color:#fff!important;
+}
+body.portada .qcard small,body.portada .qcard .nota,body.portada .qcard [class*="nota"]{color:#dfe8e2!important}
+body.portada .qcard__tag{background:#C79A2E!important;color:#1a1204!important}
+body.portada .qcard .fld,body.portada .qcard .fld *{background:transparent!important}body.portada .qcard .fld{border:0!important;box-shadow:none!important}body.portada .qcard .fld input,body.portada .qcard .fld select,body.portada .qcard .fld textarea{background:rgba(255,255,255,.14)!important;border:1px solid rgba(255,255,255,.45)!important;color:#fff!important}body.portada .qcard .fld label,body.portada .qcard .fld span{color:#eef3ef!important}body.portada .qcard form,body.portada .qcard form > div{background:transparent!important;box-shadow:none!important;border:0!important}</style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "GeneralContractor", "@id": "https://reformasapmbilbao.es/#business", "name": "Reformas APM (Reformas APMendi)", "image": "https://reformasapmbilbao.es/wp-content/uploads/2021/12/apm-reformas.png", "logo": "https://reformasapmbilbao.es/wp-content/uploads/2021/12/apm-reformas.png", "url": "https://reformasapmbilbao.es/", "telephone": "+34671938614", "email": "info@reformasapmbilbao.es", "priceRange": "€€", "areaServed": ["Bilbao", "Santutxu", "Bizkaia", "Getxo", "Barakaldo", "Basauri", "Sestao"], "address": {"@type": "PostalAddress", "streetAddress": "Karmelo Kalea 15", "addressLocality": "Bilbao", "postalCode": "48003", "addressRegion": "Bizkaia", "addressCountry": "ES"}, "openingHours": ["Mo-Fr 10:00-14:00", "Mo-Fr 16:00-20:00", "Sa 10:00-14:00"]}</script>
 <script>document.documentElement.classList.add('js')</script>
 </head>
