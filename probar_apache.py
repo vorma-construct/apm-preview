@@ -32,8 +32,11 @@ for ruta in DIRECCIONES_ACTUALES:
     elif ruta in wp: espera(ruta, 200, 'WP')
     else: espera(ruta, 200, 'NUEVA')
 print('— Páginas nuevas, recursos y casos especiales')
-for ruta in ['/contacto/', '/reforma-de-cocina-en-bilbao/', '/reformas-en-bizkaia/', '/reformas-en-getxo/', '/politica-de-cookies/', '/gracias/']:
+for ruta in ['/contacto/', '/reforma-de-cocina-en-bilbao/', '/reformas-en-bizkaia/', '/politica-de-cookies/', '/gracias/']:
     espera(ruta, 200, 'NUEVA')
+# los municipios y los barrios no se publican todavía: esas direcciones no existen ni antes ni ahora
+for ruta in ['/reformas-en-getxo/', '/reformas-en-begona/']:
+    espera(ruta, 404, 'WP')
 espera('/contacto', 301, loc='/contacto/')
 espera('/reforma-integral-en-bilbao', 301, loc='/reforma-integral-en-bilbao/')
 cc = espera('/assets/apm.css', 200)

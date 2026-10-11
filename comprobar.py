@@ -118,7 +118,19 @@ for ruta, h in paginas.items():
                         (r'Karmelo[^<]{0,12}48003|Karmelo\+Kalea\+15,\+48003|Kalea%2015%2C%2048003', 'código postal de Karmelo mal (48003)'),
                         (r'gracias\.html', 'enlace a gracias.html'), (r'demo-note', 'aviso de demo'),
                         (r'financiaci[oó]n a medida', 'promesa de financiación'), (r'pareja joven', 'relato de obra sin confirmar'),
-                        (r'Entregada en seis semanas', 'trabajo inventado')]:
+                        (r'Entregada en seis semanas', 'trabajo inventado'),
+                        # revisión de octubre de 2026: promesas que APM no ha confirmado y datos técnicos mal
+                        (r'[Pp]resupuesto cerrado|[Pp]recio cerrado', 'promesa de presupuesto cerrado'),
+                        (r'\bgratis\b|[Ss]in coste', 'promesa de gratis'),
+                        (r'[Gg]arant[ií]a por escrito|[Oo]bra garantizada|[Pp]lazos garantizados|[Gg]arantía y postventa', 'garantía sin confirmar'),
+                        (r'[Ss]in subcontratas|[Uu]n solo equipo|[Oo]ficios propios|[Ee]quipo propio|propios oficiales|nuestro propio equipo', 'equipo propio sin confirmar'),
+                        (r'aviso semanal|[Pp]lazos por escrito|calendario por escrito|[Cc]alendario de obra', 'plazos por escrito sin confirmar'),
+                        (r'[Ee]xposición de|muestras de materiales|[Pp]uedo ver muestras|ver y tocar', 'exposición sin confirmar'),
+                        (r'[Ff]inanciación|cómodas cuotas', 'financiación'),
+                        (r'PVC con rotura de puente|[Pp]erfiles con rotura de puente|"n">0</div><div class="l">mantenimiento|no necesita mantenimiento|−30%', 'dato técnico falso de ventanas'),
+                        (r'nos encargamos de toda la tramitación|[Nn]osotros lo tramitamos', 'tramitación sin confirmar'),
+                        (r'[Tt]exto orientativo|Si se instala Google Analytics|este mismo archivo|Las 54 páginas', 'nota interna a la vista'),
+                        (r'junto al metro|primeras marcas|[Mm]uchos clientes|[Nn]os lo dicen', 'dato sin comprobar')]:
         if re.search(patron, h):
             fallos.append(f'{ruta}: {que}')
     if MODO == 'prod' and 'apm-preview' in h:
@@ -131,6 +143,24 @@ for t, n in titulos.items():
     if n > 1: fallos.append(f'título repetido {n} veces: {t}')
 for d, n in descs.items():
     if n > 1: fallos.append(f'descripción repetida {n} veces: {d}')
+
+# D2) los 15 textos reescritos y comprobados están puestos en su página, con sus fuentes
+import glob as _g
+for f in sorted(_g.glob(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'revisado', '*.json'))):
+    d = json.load(open(f, encoding='utf-8'))
+    pid = os.path.basename(f)[:-5]
+    ruta = {p['id']: p['ruta'] for p in PAGINAS}[pid]
+    if ruta not in paginas:
+        continue  # en el paquete «principal» la sigue sirviendo WordPress
+    h = paginas[ruta]
+    plano = lambda x: re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', x))).strip()
+    if plano(d['cuerpo'])[:120] not in plano(h):
+        fallos.append(f'{ruta}: no lleva su texto revisado')
+    if d['fuentes'] and 'Fuentes consultadas' not in h:
+        fallos.append(f'{ruta}: le falta la lista de fuentes')
+    h1 = plano(re.search(r'<h1[^>]*>(.*?)</h1>', h, re.S).group(1))
+    if h1 != d['h1']:
+        fallos.append(f'{ruta}: el H1 «{h1}» no es el del texto revisado «{d["h1"]}»')
 
 # E) mapa del sitio
 if MODO == 'prod':

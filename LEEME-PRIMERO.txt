@@ -2,7 +2,7 @@ REFORMAS APM — WEB NUEVA LISTA PARA SUBIR (primera tanda: la migración)
 ========================================================================
 
 QUÉ HAY EN ESTE PAQUETE
-- Carpeta «nueva»: la web nueva, 35 páginas, una por dirección.
+- Carpeta «nueva»: la web nueva, 31 páginas, una por dirección.
 - «htaccess-PEGAR-ARRIBA.txt»: el bloque de reglas que la pone en marcha.
 - Este LEEME.
 
@@ -48,11 +48,27 @@ Quitar del .htaccess el bloque pegado, borrar la carpeta «nueva» y vaciar la c
 PARA COMPARAR
 Añadiendo ?origen=wp a cualquier dirección se ve lo que daría WordPress (por ejemplo https://reformasapmbilbao.es/?origen=wp).
 
+QUÉ SE HA REVISADO (guía de Google del 1 y 2 de octubre de 2026)
+- Los 10 artículos del blog y las 5 páginas de Santutxu y Miribilla se han reescrito más cortos y
+  exactos: cada precio, plazo, norma o trámite está comprobado y la página lleva al final sus fuentes.
+- De toda la web se han quitado las promesas que APM no ha confirmado: presupuesto cerrado, «gratis»,
+  garantía por escrito, equipo propio y sin subcontratas, plazos por escrito, financiación, exposición
+  y muestras en la oficina. En su lugar va lo que cualquiera puede comprobar: las dos oficinas, el
+  presupuesto sin compromiso y las opiniones de las dos fichas de Google.
+- Datos técnicos corregidos (ventanas: el PVC no lleva «rotura de puente térmico», nada es «cero
+  mantenimiento»; plazos de obra; trámites del Ayuntamiento de Bilbao).
+
 DESPUÉS
-Las 17 páginas de barrios de Bilbao están escritas, pero NO se publican tal cual: Google pide desde
-octubre de 2026 revisar a mano todo texto hecho con IA antes de publicarlo, y trata como «poco esfuerzo»
-las páginas en serie sin aportación propia. Cada barrio sale solo cuando tenga una obra real de APM en
-ese barrio, con sus fotos, y alguien de APM haya leído y dado por buena la página.
+Las páginas de municipios (Getxo, Barakaldo, Basauri, Sestao) y las 17 de barrios de Bilbao están
+escritas, pero NO se publican: Google trata como «poco esfuerzo» las páginas en serie sin aportación
+propia. Cada una sale solo cuando haya una obra real de APM allí, con sus fotos, y alguien de APM haya
+leído y dado por buena la página. Mientras, «Reformas en Bizkaia» cubre toda la provincia.
+
+PARA APM, CUANDO PODÁIS
+- El aviso legal necesita el NIF y la razón social (el de ahora tampoco los tiene).
+- Confirmar que mantenéis el «presupuesto en 24 horas tras ver la vivienda» (la web lo dice porque
+  lo dice la vuestra de ahora) y si los precios orientativos se entienden con IVA o sin IVA.
+- Fotos y datos de obras nuevas (qué se hizo, en qué barrio): es lo que más ayuda a posicionar.
 
 Comprobado antes de entregar: las 33 direcciones, 60 pruebas en un Apache con WordPress simulado,
 0 enlaces rotos, 0 errores de código, 0 desbordes en móvil, contraste correcto en las 35 páginas.

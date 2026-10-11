@@ -4,7 +4,8 @@
 Uso:  python3 construir.py prod    <fase> <carpeta_salida>   -> paquete para subir al alojamiento
       python3 construir.py preview <fase> <carpeta_salida>   -> vista previa para GitHub Pages (/apm-preview/)
 """
-import re, os, sys, json, html, shutil, base64, hashlib, datetime
+import re, os, sys, json, html, shutil, base64, hashlib, datetime, glob
+from collections import Counter
 from datos import *
 
 MODO = sys.argv[1]
@@ -16,6 +17,10 @@ BASE = '/' if PROD else '/apm-preview/'
 HOY = datetime.date.today().isoformat()
 AQUI = os.path.dirname(os.path.abspath(__file__))
 SRC = open(os.path.join(AQUI, 'fuente', 'archivo-unico.html'), encoding='utf-8').read()
+# textos reescritos a mano y comprobados con fuentes (octubre de 2026): uno por página
+REVISADO = {os.path.basename(f)[:-5]: json.load(open(f, encoding='utf-8'))
+            for f in sorted(glob.glob(os.path.join(AQUI, 'revisado', '*.json')))}
+USO_VERDAD = Counter()
 
 if os.path.exists(OUT):
     shutil.rmtree(OUT)
@@ -120,6 +125,17 @@ css += ('\n/* franja de cifras de la portada: vuelve a ser oscura, que las cifra
         'body.portada #p-index > section.section--paper2{background:rgba(244,241,234,.94)!important}\n'
         '/* subtítulo del logo con contraste suficiente */\n.brand__txt span{color:#46505a}\n')
 css += '\n/* foto original de la obra dentro del artículo */\n.prose figure{margin:1.8rem 0}.prose figure img{margin:0;width:100%;height:auto}.prose figcaption{font-size:.92rem;color:var(--ink-3,#5b6472);margin-top:.6rem}\n'
+css += ('\n/* fuentes consultadas al final de cada texto revisado */\n'
+        '.prose .fuentes{margin-top:2.6rem;padding-top:1.4rem;border-top:1px solid rgba(18,22,29,.14)}'
+        '.prose .fuentes h2{font-size:1.2rem;margin:0 0 .7rem}'
+        '.prose .fuentes ul{margin:0;padding-left:1.1rem}'
+        '.prose .fuentes li{font-size:.9rem;line-height:1.45;margin:.4rem 0;overflow-wrap:anywhere}'
+        '.prose .fuentes a{font-weight:500}\n'
+        '/* enlaces dentro de las tarjetas (opiniones de Google, trabajos realizados) */\n'
+        '.quote p a,.feat p a{color:var(--brand-700,#0b5a2a);text-decoration:underline;text-underline-offset:2px;font-weight:650}\n'
+        '.prose table{width:100%;border-collapse:collapse;margin:1.4rem 0;font-size:.95rem;display:block;overflow-x:auto}'
+        '.prose th,.prose td{border:1px solid rgba(18,22,29,.16);padding:.55rem .7rem;text-align:left;vertical-align:top}'
+        '.prose th{background:rgba(18,22,29,.05)}\n')
 css = '/* Reformas APM — estilos (generado desde el archivo único) */\n' + css
 VCSS = hashlib.md5(css.encode()).hexdigest()[:8]
 escribir('assets/apm.css', css)
@@ -274,14 +290,46 @@ def correcciones(h):
     h = h.replace('https://reformasapmbilbao.es/gracias.html', DOMINIO + '/gracias/')
     # logo propio (una sola descarga, sin depender de WordPress)
     h = h.replace('src="https://reformasapmbilbao.es/wp-content/uploads/2021/12/apm-reformas.png"', f'src="{BASE}assets/logo-apm.png"')
+    # lo que APM no ha confirmado (presupuesto cerrado, gratis, garantía por escrito, equipo propio…) y datos técnicos mal
+    for patron, nuevo in VERDAD_BLOQUES:
+        h, n = re.subn(patron, lambda m: nuevo, h, flags=re.S)
+        USO_VERDAD[patron] += n
+    for viejo, nuevo in VERDAD:
+        n = h.count(viejo)
+        if n:
+            h = h.replace(viejo, nuevo)
+            USO_VERDAD[viejo] += n
     # fotos: en la web real, misma carpeta de WordPress que hoy (dirección relativa); en la vista previa, la absoluta
     if PROD:
         h = h.replace('https://reformasapmbilbao.es/wp-content/', '/wp-content/')
     return h
 
 # ------------------------------------------------------------------ ajustes por página
+def aplicar_revisado(pid, h):
+    """Pone el texto revisado: entradilla de la cabecera, cuerpo del artículo y lista de fuentes."""
+    d = REVISADO[pid]
+    h, n = re.subn(r'(<section class="phero">.*?</h1>\s*<p>).*?(</p>)', lambda m: m.group(1) + esc(d['entradilla']) + m.group(2),
+                   h, count=1, flags=re.S)
+    assert n == 1, pid + ': no encuentro la entradilla'
+    ini = h.find('<article class="prose">')
+    fin = h.find('</article>', ini)
+    assert ini > 0 and fin > ini, pid + ': no encuentro el artículo'
+    meta = re.search(r'<div class="postmeta">.*?</div>', h[ini:fin], re.S)
+    meta = meta.group(0) if meta else ''
+    minutos = max(1, round(len(texto(d['cuerpo']).split()) / 200))
+    meta = re.sub(r'\d+ min de lectura', f'{minutos} min de lectura', meta)
+    meta = meta.replace('Actualizado en 2026', 'Revisado en ' + REVISADO_EN)
+    fuentes = ''.join(f'<li><a href="{esc(u)}" target="_blank" rel="noopener">{esc(t)}</a></li>' for t, u in d['fuentes'])
+    fuentes = f'<div class="fuentes"><h2>Fuentes consultadas</h2><ul>{fuentes}</ul></div>' if fuentes else ''
+    h = h[:ini] + '<article class="prose">\n' + meta + '\n' + d['cuerpo'] + '\n' + fuentes + '\n' + h[fin:]
+    # páginas del barrio: las preguntas frecuentes de antes sobran (están en el texto) y prometían cosas sin confirmar
+    h = re.sub(r'<section class="section section--paper2" id="faq">.*?</section>', '', h, flags=re.S)
+    return h
+
 def ajustar(pid, h):
     p = TODAS[pid]
+    if pid in REVISADO:
+        h = aplicar_revisado(pid, h)
     if p.get('h1'):
         h = re.sub(r'(<h1[^>]*>).*?(</h1>)', lambda m: m.group(1) + esc(p['h1']) + m.group(2), h, count=1, flags=re.S)
         # la miga de pan repite el título del artículo
@@ -327,6 +375,13 @@ def ajustar(pid, h):
         assert n == 1, 'no encuentro la galería de la portada'
         h = h.replace('Una pequeña muestra de pisos, cocinas y baños que hemos transformado. Cada obra, entregada a tiempo y rematada al detalle.',
                       'Algunas de las obras que hemos hecho en Bilbao, con sus fotos. Pulsa en cada una para verla en grande.')
+    if pid in ('p-index', 'p-reformas-bizkaia'):
+        # aquí ya está «Lo que puedes comprobar» en grande: fuera la versión corta
+        h, n = re.subn(r'<section class="section section--paper2 comprobar">.*?</section>', '', h, count=1, flags=re.S)
+        assert n == 1
+    if pid == 'p-index':  # el «mapa de la web» era del archivo único
+        h, n = re.subn(r'<section class="section section--paper2" id="mapa">.*?</section>', '', h, count=1, flags=re.S)
+        assert n == 1
     if pid == 'p-trabajos-realizados':
         h = trabajos(h)
     if pid == 'p-blog-index':
@@ -360,6 +415,9 @@ def blog_indice(h):
         if p.get('h1') and p['tipo'] == 'articulo':
             h = re.sub(r'(<a class="postcard" href="#' + re.escape(p['id']) + r'".*?<h3>).*?(</h3>)',
                        lambda m: m.group(1) + esc(p['h1']) + m.group(2), h, count=1, flags=re.S)
+    for pid, d in REVISADO.items():
+        h = re.sub(r'(<a class="postcard" href="#' + re.escape(pid) + r'".*?</h3><p>).*?(</p>)',
+                   lambda m: m.group(1) + esc(d['entradilla']) + m.group(2), h, count=1, flags=re.S)
     # los artículos de siempre que siguen en WordPress, enlazados desde el blog nuevo
     items = ''.join(f'<li><a href="{url_wp(r)}">{esc(t)}</a></li>' for r, t, _ in SIGUEN_EN_WORDPRESS)
     bloque = ('<section class="section section--paper2"><div class="container"><div class="shead" data-reveal>'
@@ -530,5 +588,10 @@ if PROD:
                '# END Reformas APM - web nueva', '']
     escribir('../htaccess-PEGAR-ARRIBA.txt', '\n'.join(reglas))
 
+sin_uso = [k for k in [p for p, _ in VERDAD_BLOQUES] + [v for v, _ in VERDAD] if not USO_VERDAD[k]]
+for k in sin_uso:
+    print('  aviso: no se ha usado la corrección «' + k[:90] + '»')
+for pid in REVISADO:
+    assert pid in TODAS, pid
 json.dump(hechas, open(os.path.join(OUT, '..', f'paginas-{MODO}.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 print(f'{MODO} fase {FASE}{" (solo principales)" if SOLO_PRINCIPAL else ""}: {len(hechas)} páginas en {OUT} | css {len(css)//1024} KB | js {len(js)//1024} KB')
