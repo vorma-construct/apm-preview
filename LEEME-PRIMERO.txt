@@ -1,0 +1,56 @@
+REFORMAS APM — WEB NUEVA LISTA PARA SUBIR (primera tanda: la migración)
+========================================================================
+
+QUÉ HAY EN ESTE PAQUETE
+- Carpeta «nueva»: la web nueva, 35 páginas, una por dirección.
+- «htaccess-PEGAR-ARRIBA.txt»: el bloque de reglas que la pone en marcha.
+- Este LEEME.
+
+CÓMO QUEDAN LAS 33 DIRECCIONES QUE HOY TIENE LA WEB EN GOOGLE
+- 25 tienen la página nueva en SU MISMA dirección y con su misma palabra clave en el título.
+- 6 artículos antiguos se quedan exactamente como están (los sigue sirviendo WordPress):
+  /reforma-integral-de-vivienda-en-bilbao/, /reforma-tu-salon-con-estas-ideas-reformas-apm/,
+  /reforma-integral-de-salon-en-bilbao/, /ideas-para-integrar-cocina-y-salon/,
+  /cocinas-pequenas-en-bilbao-como-sacarlas-partido/, /estilos-de-cocina-en-bilbao/
+- 2 se juntan con otra con una redirección 301:
+  /reformas-en-bilbao/ -> portada   y   /personalizar-cookies/ -> /politica-de-cookies/
+- No se pierde ninguna. WordPress NO se borra: se queda debajo, con sus fotos en wp-content.
+
+CÓMO SE SUBE (alojamiento normal de WordPress, con Apache o LiteSpeed)
+0. Copia de seguridad completa (archivos y base de datos) y una copia aparte del archivo .htaccess.
+1. Subir la carpeta «nueva» entera a la raíz de la web (la misma carpeta donde están wp-admin y wp-content).
+2. Abrir el .htaccess de la raíz y pegar ARRIBA DEL TODO el contenido de «htaccess-PEGAR-ARRIBA.txt»
+   (encima de la línea «# BEGIN WordPress» y de cualquier otro bloque).
+3. Vaciar la caché: en el escritorio de WordPress, el plugin de caché (LiteSpeed Cache, WP Rocket…) -> Purgar todo.
+   Si el alojamiento tiene caché propia, también.
+4. Comprobar en una ventana de incógnito:
+   - https://reformasapmbilbao.es/                      -> portada nueva con el vídeo
+   - https://reformasapmbilbao.es/reforma-integral-en-santutxu/  -> página nueva
+   - https://reformasapmbilbao.es/reformas-en-bilbao/    -> salta a la portada
+   - https://reformasapmbilbao.es/estilos-de-cocina-en-bilbao/   -> el artículo de siempre
+   - https://reformasapmbilbao.es/robots.txt y /sitemap.xml      -> los nuevos
+   - Enviar una vez el formulario de presupuesto: llega a info@reformasapmbilbao.es un correo de FormSubmit
+     para activarlo. Hay que pulsar su enlace; desde ese momento llegan las solicitudes.
+5. Search Console: Sitemaps -> enviar https://reformasapmbilbao.es/sitemap.xml
+   (la portada lleva las mismas etiquetas de verificación de Google, Bing y Yandex que la web actual).
+
+VÍDEOS DE LA PORTADA
+Ahora se ven desde Higgsfield. Para que no dependan de esa cuenta, subir los cuatro a «nueva/video/»
+con estos nombres (la web los busca primero ahí y, si no están, los coge de Higgsfield):
+- apm-obra.mp4     https://d8j0ntlcm91z4.cloudfront.net/user_3JVkNd1GnfKqGxO6OaFHjhkWtp2/hf_20260918_210207_07e34844-c3a8-498f-847a-ce828ac2a9e3.mp4
+- apm-cocina.mp4   https://d8j0ntlcm91z4.cloudfront.net/user_3JVkNd1GnfKqGxO6OaFHjhkWtp2/hf_20260918_210207_77b5bc2a-de19-4668-a0a6-be2fb422fdf5.mp4
+- apm-bano.mp4     https://d8j0ntlcm91z4.cloudfront.net/user_3JVkNd1GnfKqGxO6OaFHjhkWtp2/hf_20260918_210207_784f9573-025f-4955-b1c1-c5e07ede1987.mp4
+- apm-ventanas.mp4 https://d8j0ntlcm91z4.cloudfront.net/user_3JVkNd1GnfKqGxO6OaFHjhkWtp2/hf_20260918_210207_c51b8253-f97d-4e2c-acd0-b2666904fec1.mp4
+
+VOLVER ATRÁS (si algo no va bien)
+Quitar del .htaccess el bloque pegado, borrar la carpeta «nueva» y vaciar la caché. Vuelve la web de antes, entera.
+
+PARA COMPARAR
+Añadiendo ?origen=wp a cualquier dirección se ve lo que daría WordPress (por ejemplo https://reformasapmbilbao.es/?origen=wp).
+
+DESPUÉS
+Las 17 páginas de barrios de Bilbao están hechas y se publican por tandas de cuatro o cinco, una tanda cada
+tres o cuatro semanas, cuando se vea en Search Console que la migración ha ido bien.
+
+Comprobado antes de entregar: las 33 direcciones, 60 pruebas en un Apache con WordPress simulado,
+0 enlaces rotos, 0 errores de código, 0 desbordes en móvil, contraste correcto en las 35 páginas.
