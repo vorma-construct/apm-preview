@@ -3,6 +3,7 @@
 import subprocess, re, sys
 from datos import *
 B = 'http://127.0.0.1:8200'
+PRINCIPAL = len(sys.argv) > 1 and sys.argv[1] == 'principal'
 def pide(ruta, metodo='GET'):
     r = subprocess.run(['curl', '-s', '-X', metodo, '-D', '-', '-o', '/tmp/claude-0/cuerpo', B + ruta], capture_output=True, text=True)
     cab = r.stdout
@@ -22,6 +23,9 @@ def espera(ruta, estado, origen=None, loc=None, metodo='GET', contiene=None):
     return cc
 print('— Las 33 direcciones de hoy')
 wp = {r for r, _, _ in SIGUEN_EN_WORDPRESS}
+if PRINCIPAL:
+    _t = {p['id']: p for p in PAGINAS}
+    wp |= {_t[i]['ruta'] for i in REVISION_APM}
 for ruta in DIRECCIONES_ACTUALES:
     if ruta == '/reformas-en-bilbao/': espera(ruta, 301, loc='/')
     elif ruta == '/personalizar-cookies/': espera(ruta, 301, loc='/politica-de-cookies/')
@@ -39,8 +43,9 @@ espera('/robots.txt', 200, contiene='Sitemap: https://reformasapmbilbao.es/sitem
 espera('/sitemap.xml', 200, contiene='<urlset')
 espera('/sitemap_index.xml', 301, loc='/sitemap.xml')
 espera('/post-sitemap.xml', 301, loc='/sitemap.xml')
-espera('/blog/page/2/', 301, loc='/blog/')
-espera('/category/blog/', 301, loc='/blog/')
+if not PRINCIPAL:
+    espera('/blog/page/2/', 301, loc='/blog/')
+    espera('/category/blog/', 301, loc='/blog/')
 espera('/aviso-legal-y-politica-de-privacidad/', 301, loc='/aviso-legal/')
 espera('/nueva/', 404)
 espera('/nueva/index.html', 404)

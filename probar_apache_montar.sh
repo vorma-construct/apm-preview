@@ -3,7 +3,7 @@
 set -e
 R=/tmp/claude-0/apache; D=/srv/apm-test/docroot
 rm -rf $D && mkdir -p $D/wp-content/uploads/2019/11 $D/wp-admin
-cp -r /home/claude/apm-build/salida/prod/nueva $D/nueva
+cp -r ${PAQUETE:-/home/claude/apm-build/salida/prod}/nueva $D/nueva
 echo "foto" > $D/wp-content/uploads/2019/11/reforma-integral-en-santutxu.jpeg
 echo "<?php echo 'PANEL'; " > $D/wp-admin/index.php
 python3 - <<'PY'
@@ -20,7 +20,7 @@ http_response_code(404); echo "WORDPRESS-404 $uri";
 """ % lista
 open('/srv/apm-test/docroot/index.php','w').write(php)
 PY
-{ cat /home/claude/apm-build/salida/prod/htaccess-PEGAR-ARRIBA.txt; cat <<'WP'
+{ cat ${PAQUETE:-/home/claude/apm-build/salida/prod}/htaccess-PEGAR-ARRIBA.txt; cat <<'WP'
 # BEGIN WordPress
 <IfModule mod_rewrite.c>
 RewriteEngine On

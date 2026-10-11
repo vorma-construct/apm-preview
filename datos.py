@@ -261,3 +261,17 @@ NEGOCIO = {
     'santutxu': dict(calle='Karmelo Kalea 15', cp='48004', lat=43.2542915, lng=-2.911939),
     'sanadrian': dict(calle='San Adrian Etorbidea 19', cp='48003', lat=43.2481916, lng=-2.93254),
 }
+
+
+# Páginas cuya versión nueva es texto largo escrito con IA y que, en la web real, hoy tienen texto escrito a mano
+# (o artículos que ya posicionan). En el paquete «principal» NO se cambian: las sigue sirviendo WordPress tal cual
+# hasta que alguien de APM lea la versión nueva, la corrija y le añada fotos y datos suyos (guía de Google, oct-2026).
+REVISION_APM = [
+    'p-blog-index', 'p-reforma-bano-bilbao',
+    'p-reforma-integral-en-santutxu-index', 'p-reforma-de-cocina-en-santutxu-index', 'p-reforma-de-bano-en-santutxu-index',
+    'p-nuevo-local-de-reformas-en-santutxu-index', 'p-reforma-de-bano-en-miribilla-index',
+    'p-blog-cambiar-banera-por-plato-de-ducha-bilbao', 'p-blog-vestidor-a-medida', 'p-blog-reforma-integral-transformar-hogar',
+    'p-blog-como-elegir-empresa-de-reformas-bilbao', 'p-blog-ventajas-ventanas-pvc-bilbao', 'p-blog-ideas-para-reformar-tu-cocina',
+    'p-blog-antes-de-una-reforma-integral', 'p-blog-pvc-o-aluminio-que-ventana-elegir', 'p-blog-estilos-de-cocina-que-son-tendencia',
+    'p-blog-errores-al-reformar-el-bano',
+]

@@ -6,6 +6,7 @@ from datos import *
 
 WEB = sys.argv[1]
 MODO = sys.argv[2] if len(sys.argv) > 2 else 'prod'
+PRINCIPAL = len(sys.argv) > 3 and sys.argv[3] == 'principal'
 BASE = '/' if MODO == 'prod' else '/apm-preview/'
 fallos, avisos = [], []
 
@@ -29,7 +30,10 @@ for f in glob.glob(os.path.join(WEB, '**', '*.html'), recursive=True):
     paginas[ruta] = leer(f)
 
 wp_rutas = {r for r, _, _ in SIGUEN_EN_WORDPRESS}
-redir = [(re.compile(p), d) for p, d, _ in REDIRECCIONES]
+if PRINCIPAL:
+    _todas = {p['id']: p for p in PAGINAS}
+    wp_rutas |= {_todas[i]['ruta'] for i in REVISION_APM}
+redir = [(re.compile(p), d) for p, d, _ in REDIRECCIONES if not (PRINCIPAL and p.startswith(('^blog/', '^category/')))]
 def redirige(ruta):
     for rx, d in redir:
         if rx.match(ruta.lstrip('/')):

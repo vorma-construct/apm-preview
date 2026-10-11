@@ -10,6 +10,7 @@ from datos import *
 MODO = sys.argv[1]
 FASE = int(sys.argv[2])
 OUT = sys.argv[3]
+SOLO_PRINCIPAL = len(sys.argv) > 4 and sys.argv[4] == 'principal'
 PROD = MODO == 'prod'
 BASE = '/' if PROD else '/apm-preview/'
 HOY = datetime.date.today().isoformat()
@@ -192,19 +193,27 @@ document.addEventListener('touchstart',function(){var v=vs[act];if(v.paused){var
 })();</script>""" % json.dumps(lista)
 
 # ------------------------------------------------------------------ direcciones
-PUB = {p['id']: p for p in PAGINAS if p['fase'] <= FASE}
 TODAS = {p['id']: p for p in PAGINAS}
+EN_REVISION = set(REVISION_APM) if SOLO_PRINCIPAL else set()
+PUB = {p['id']: p for p in PAGINAS if p['fase'] <= FASE and p['id'] not in EN_REVISION}
+# direcciones que en la web real sigue contestando WordPress con su texto de siempre
+RUTAS_WP = [r for r, _, _ in SIGUEN_EN_WORDPRESS] + [TODAS[i]['ruta'] for i in sorted(EN_REVISION)]
+
+def url_wp(ruta):
+    """Páginas que sigue sirviendo WordPress: en la vista previa se enlazan a la web real."""
+    return ruta if PROD else DOMINIO + ruta
+
+def ruta_es_wp(ruta):
+    return ruta in RUTAS_WP
 
 def url_de(pid):
     pid = ALIAS.get(pid, pid)
+    if pid in EN_REVISION:
+        return url_wp(TODAS[pid]['ruta'])
     if pid not in PUB:
         return None
     r = PUB[pid]['ruta']
     return BASE if r == '/' else BASE + r.lstrip('/')
-
-def url_wp(ruta):
-    """Artículos que sigue sirviendo WordPress: en la vista previa se enlazan a la web real."""
-    return ruta if PROD else DOMINIO + ruta
 
 def pagina_de_ancla(ancla):
     for pid, h in PAG_HTML.items():
@@ -309,7 +318,7 @@ def ajustar(pid, h):
         for forma, k in zip(formas, orden):
             titulo, lugar, ruta, foto = TRABAJOS_REALES[k]
             foto_url = foto.replace(DOMINIO, '') if PROD else foto
-            es_wp = any(ruta == r for r, _, _ in SIGUEN_EN_WORDPRESS)
+            es_wp = ruta_es_wp(ruta)
             enlace = url_wp(ruta) if es_wp else (BASE + ruta.lstrip('/'))
             items.append(f'<a class="folio__item folio__item--{forma}" href="{enlace}" data-lightbox="{foto_url}" '
                          f'data-cap="{esc(titulo)}" data-reveal><img src="{foto_url}" alt="{esc(titulo)}" loading="lazy">'
@@ -330,7 +339,7 @@ def trabajos(h):
     tarjetas = []
     for titulo, lugar, ruta, foto in TRABAJOS_REALES:
         foto_url = foto.replace(DOMINIO, '') if PROD else foto
-        es_wp = any(ruta == r for r, _, _ in SIGUEN_EN_WORDPRESS)
+        es_wp = ruta_es_wp(ruta)
         enlace = url_wp(ruta) if es_wp else (BASE + ruta.lstrip('/'))
         tarjetas.append(f'''<div class="postcard" data-reveal>
           <div class="postcard__img" data-lightbox="{foto_url}" data-cap="{esc(titulo)} · {esc(lugar)}" style="cursor:zoom-in">
@@ -476,6 +485,8 @@ if PROD:
         urls.append((DOMINIO + p['ruta'], HOY))
     for ruta, _, fecha in SIGUEN_EN_WORDPRESS:
         urls.append((DOMINIO + ruta, fecha))
+    for i in sorted(EN_REVISION):
+        urls.append((DOMINIO + TODAS[i]['ruta'], TODAS[i].get('fecha', HOY)))
     xml = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     xml += [f'  <url><loc>{u}</loc><lastmod>{f}</lastmod></url>' for u, f in urls]
     xml.append('</urlset>')
@@ -492,6 +503,8 @@ if PROD:
               'RewriteEngine On',
               'RewriteBase /']
     for patron, destino, motivo in REDIRECCIONES:
+        if SOLO_PRINCIPAL and patron.startswith(('^blog/', '^category/')):
+            continue  # el blog de siempre se queda en WordPress, con sus páginas y su categoría
         reglas += [f'# 301: {motivo}', f'RewriteRule {patron} {destino} [R=301,L]']
     reglas += ['# Recursos de la web nueva',
                'RewriteRule ^(assets/.+|video/.+|sitemap\\.xml|robots\\.txt)$ /nueva/$1 [L]',
@@ -518,4 +531,4 @@ if PROD:
     escribir('../htaccess-PEGAR-ARRIBA.txt', '\n'.join(reglas))
 
 json.dump(hechas, open(os.path.join(OUT, '..', f'paginas-{MODO}.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-print(f'{MODO} fase {FASE}: {len(hechas)} páginas en {OUT} | css {len(css)//1024} KB | js {len(js)//1024} KB')
+print(f'{MODO} fase {FASE}{" (solo principales)" if SOLO_PRINCIPAL else ""}: {len(hechas)} páginas en {OUT} | css {len(css)//1024} KB | js {len(js)//1024} KB')
