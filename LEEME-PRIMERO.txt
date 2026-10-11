@@ -49,8 +49,10 @@ PARA COMPARAR
 Añadiendo ?origen=wp a cualquier dirección se ve lo que daría WordPress (por ejemplo https://reformasapmbilbao.es/?origen=wp).
 
 DESPUÉS
-Las 17 páginas de barrios de Bilbao están hechas y se publican por tandas de cuatro o cinco, una tanda cada
-tres o cuatro semanas, cuando se vea en Search Console que la migración ha ido bien.
+Las 17 páginas de barrios de Bilbao están escritas, pero NO se publican tal cual: Google pide desde
+octubre de 2026 revisar a mano todo texto hecho con IA antes de publicarlo, y trata como «poco esfuerzo»
+las páginas en serie sin aportación propia. Cada barrio sale solo cuando tenga una obra real de APM en
+ese barrio, con sus fotos, y alguien de APM haya leído y dado por buena la página.
 
 Comprobado antes de entregar: las 33 direcciones, 60 pruebas en un Apache con WordPress simulado,
 0 enlaces rotos, 0 errores de código, 0 desbordes en móvil, contraste correcto en las 35 páginas.
