@@ -1078,3 +1078,9 @@ body.portada #p-index > section.section--paper2{background:rgba(244,241,234,.94)
 
 /* foto original de la obra dentro del artículo */
 .prose figure{margin:1.8rem 0}.prose figure img{margin:0;width:100%;height:auto}.prose figcaption{font-size:.92rem;color:var(--ink-3,#5b6472);margin-top:.6rem}
+
+/* fuentes consultadas al final de cada texto revisado */
+.prose .fuentes{margin-top:2.6rem;padding-top:1.4rem;border-top:1px solid rgba(18,22,29,.14)}.prose .fuentes h2{font-size:1.2rem;margin:0 0 .7rem}.prose .fuentes ul{margin:0;padding-left:1.1rem}.prose .fuentes li{font-size:.9rem;line-height:1.45;margin:.4rem 0;overflow-wrap:anywhere}.prose .fuentes a{font-weight:500}
+/* enlaces dentro de las tarjetas (opiniones de Google, trabajos realizados) */
+.quote p a,.feat p a{color:var(--brand-700,#0b5a2a);text-decoration:underline;text-underline-offset:2px;font-weight:650}
+.prose table{width:100%;border-collapse:collapse;margin:1.4rem 0;font-size:.95rem;display:block;overflow-x:auto}.prose th,.prose td{border:1px solid rgba(18,22,29,.16);padding:.55rem .7rem;text-align:left;vertical-align:top}.prose th{background:rgba(18,22,29,.05)}
